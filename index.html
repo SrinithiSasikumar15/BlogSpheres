@@ -1,1 +1,3229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>BlogSphere - Professional Blog Platform</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7ff;
+            color: #11184f;
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* ================= HEADER ================= */
+
+        .header {
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid #e5e8f2;
+            display: flex;
+            align-items: center;
+            padding: 0 28px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .logo-area {
+            width: 255px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #7442ed, #4b38d5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+            font-weight: bold;
+            box-shadow: 0 6px 15px rgba(83, 59, 210, 0.25);
+        }
+
+        .logo-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: #11184f;
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 580px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            height: 42px;
+            border: 1px solid #dce2f0;
+            border-radius: 9px;
+            padding: 0 18px 0 44px;
+            font-size: 15px;
+            outline: none;
+            background: #f8faff;
+        }
+
+        .search-box input:focus {
+            border-color: #6844ed;
+            background: white;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 12px;
+            font-size: 18px;
+            color: #52618f;
+        }
+
+        .header-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .header-icon {
+            border: none;
+            background: transparent;
+            font-size: 23px;
+            color: #496ce8;
+            position: relative;
+        }
+
+        .notification-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ed4b5c;
+            border-radius: 50%;
+            top: -1px;
+            right: -2px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .profile-circle {
+            width: 43px;
+            height: 43px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5940df, #3036c5);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            bottom: 0;
+            width: 225px;
+            background: linear-gradient(180deg, #141c42, #101638);
+            color: white;
+            padding: 27px 14px;
+            z-index: 900;
+        }
+
+        .sidebar-profile {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 0 15px 28px;
+        }
+
+        .sidebar-profile .profile-circle {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #a37aff, #6749e8);
+        }
+
+        .sidebar-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .sidebar-role {
+            color: #aeb7da;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar-menu button {
+            width: 100%;
+            height: 48px;
+            border: none;
+            background: transparent;
+            color: #cdd3ed;
+            border-radius: 8px;
+            text-align: left;
+            padding: 0 16px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: 0.2s;
+        }
+
+        .sidebar-menu button:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+
+        .sidebar-menu button.active {
+            background: linear-gradient(90deg, #5542d5, #4e45ca);
+            color: white;
+            box-shadow: 0 5px 15px rgba(79, 64, 205, 0.25);
+        }
+
+        .menu-icon {
+            width: 22px;
+            text-align: center;
+            font-size: 19px;
+        }
+
+        .sidebar-bottom {
+            position: absolute;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            text-align: center;
+            color: #aeb7dc;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 225px;
+            padding-top: 70px;
+            min-height: 100vh;
+        }
+
+        .page {
+            display: none;
+            padding: 28px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* ================= DASHBOARD ================= */
+
+        .dashboard-container {
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+
+        .dashboard-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .dashboard-heading h1 {
+            font-size: 26px;
+            margin-bottom: 6px;
+        }
+
+        .dashboard-heading p {
+            color: #67729c;
+            font-size: 14px;
+        }
+
+        .primary-btn {
+            border: none;
+            background: linear-gradient(135deg, #6644e9, #5036d4);
+            color: white;
+            border-radius: 8px;
+            padding: 11px 17px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 5px 12px rgba(87, 61, 211, 0.22);
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        /* ================= STATS ================= */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e2e6f2;
+            border-radius: 10px;
+            padding: 17px;
+            min-height: 105px;
+        }
+
+        .stat-title {
+            color: #70799b;
+            font-size: 12px;
+            margin-bottom: 9px;
+        }
+
+        .stat-number {
+            font-size: 25px;
+            font-weight: 700;
+            color: #17205c;
+        }
+
+        .stat-small {
+            margin-top: 6px;
+            font-size: 11px;
+            color: #4d9a71;
+        }
+
+        /* ================= DASHBOARD CONTENT ================= */
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1.65fr 1fr;
+            gap: 17px;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid #e1e5f0;
+            border-radius: 10px;
+            padding: 19px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .panel-header h2 {
+            font-size: 17px;
+        }
+
+        .view-all {
+            border: none;
+            background: none;
+            color: #6041df;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .recent-post {
+            display: flex;
+            gap: 13px;
+            padding: 11px 0;
+            border-bottom: 1px solid #edf0f7;
+        }
+
+        .recent-post:last-child {
+            border-bottom: none;
+        }
+
+        .post-image {
+            width: 68px;
+            height: 52px;
+            object-fit: cover;
+            border-radius: 7px;
+        }
+
+        .recent-post h3 {
+            font-size: 13px;
+            margin-bottom: 5px;
+            color: #18205a;
+        }
+
+        .recent-post p {
+            font-size: 11px;
+            color: #7982a1;
+        }
+
+        .tip-box {
+            background: linear-gradient(135deg, #f0edff, #f8f6ff);
+            border-radius: 9px;
+            padding: 17px;
+            margin-top: 15px;
+        }
+
+        .tip-box h3 {
+            font-size: 14px;
+            margin-bottom: 7px;
+        }
+
+        .tip-box p {
+            color: #68729b;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* ================= HOME ================= */
+
+        .hero {
+            max-width: 1080px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #6445e8, #4937ca);
+            border-radius: 15px;
+            color: white;
+            padding: 45px;
+            min-height: 270px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 570px;
+        }
+
+        .hero h1 {
+            font-size: 39px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 16px;
+            line-height: 1.7;
+            opacity: 0.92;
+            margin-bottom: 22px;
+        }
+
+        .hero-btn {
+            background: white;
+            color: #513bd2;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .hero-shape {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            border: 35px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-header {
+            max-width: 1080px;
+            margin: 0 auto 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header h2 {
+            font-size: 22px;
+        }
+
+        .blog-grid {
+            max-width: 1080px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 17px;
+        }
+
+        .blog-card {
+            background: white;
+            border: 1px solid #e1e5f0;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: 0.2s;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(43, 49, 90, 0.08);
+        }
+
+        .blog-card img {
+            width: 100%;
+            height: 155px;
+            object-fit: cover;
+        }
+
+        .blog-card-body {
+            padding: 15px;
+        }
+
+        .category-tag {
+            display: inline-block;
+            background: #eeeaff;
+            color: #583ed8;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+            margin-bottom: 9px;
+        }
+
+        .blog-card h3 {
+            font-size: 16px;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .blog-card p {
+            color: #707a9c;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .blog-meta {
+            margin-top: 12px;
+            color: #8a92ad;
+            font-size: 10px;
+        }
+
+        /* ================= CREATE BLOG ================= */
+
+        .create-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.55fr 0.85fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .create-left {
+            min-width: 0;
+        }
+
+        .create-heading {
+            margin-bottom: 18px;
+        }
+
+        .create-heading h1 {
+            font-size: 27px;
+            margin-bottom: 6px;
+        }
+
+        .create-heading p {
+            color: #68739b;
+            font-size: 14px;
+        }
+
+        .form-card {
+            background: white;
+            border: 1px solid #e0e5f1;
+            border-radius: 11px;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .required {
+            color: #e8445c;
+        }
+
+        .form-control {
+            width: 100%;
+            height: 43px;
+            border: 1px solid #d6ddec;
+            border-radius: 8px;
+            padding: 0 13px;
+            font-size: 14px;
+            outline: none;
+            background: white;
+        }
+
+        textarea.form-control {
+            height: 150px;
+            padding: 13px;
+            resize: vertical;
+        }
+
+        .form-control:focus {
+            border-color: #6343e5;
+            box-shadow: 0 0 0 3px rgba(99, 67, 229, 0.08);
+        }
+
+        /* CATEGORY CARDS */
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .category-card {
+            border: 1px solid #dce2f0;
+            background: #f8faff;
+            border-radius: 9px;
+            padding: 8px;
+            cursor: pointer;
+            position: relative;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .category-card:hover {
+            border-color: #7452ed;
+        }
+
+        .category-card.selected {
+            border: 2px solid #6543e5;
+            background: #f4f1ff;
+        }
+
+        .category-card img {
+            width: 100%;
+            height: 95px;
+            object-fit: cover;
+            border-radius: 7px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .category-card span {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .check-mark {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #6543e5;
+            color: white;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+
+        .category-card.selected .check-mark {
+            display: flex;
+        }
+
+        .file-input {
+            width: 100%;
+            border: 1px solid #d8deeb;
+            padding: 9px;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            gap: 5px;
+            padding: 8px;
+            border: 1px solid #d9dfec;
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            background: #fafbff;
+        }
+
+        .editor-toolbar button {
+            width: 30px;
+            height: 28px;
+            border: none;
+            background: transparent;
+            font-weight: bold;
+            color: #3f4b75;
+            border-radius: 5px;
+        }
+
+        .editor-toolbar button:hover {
+            background: #e9e7ff;
+        }
+
+        .content-editor {
+            border-radius: 0 0 8px 8px !important;
+        }
+
+        .form-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 17px;
+        }
+
+        .secondary-btn {
+            background: white;
+            color: #513bd2;
+            border: 1px solid #7057e9;
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* PREVIEW */
+
+        .preview-card {
+            background: white;
+            border: 1px solid #e0e5f1;
+            border-radius: 11px;
+            padding: 19px;
+            position: sticky;
+            top: 90px;
+        }
+
+        .preview-header {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 16px;
+        }
+
+        .preview-header h2 {
+            font-size: 17px;
+        }
+
+        .preview-image {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 13px;
+        }
+
+        .preview-card h1 {
+            font-size: 21px;
+            line-height: 1.4;
+            margin: 10px 0;
+        }
+
+        .preview-meta {
+            color: #707b9e;
+            font-size: 12px;
+            margin-bottom: 13px;
+        }
+
+        .preview-content {
+            color: #68739a;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        /* ================= EXPLORE ================= */
+
+        .explore-container {
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+
+        .explore-header {
+            margin-bottom: 20px;
+        }
+
+        .explore-header h1 {
+            font-size: 27px;
+            margin-bottom: 6px;
+        }
+
+        .explore-header p {
+            color: #68739b;
+            font-size: 14px;
+        }
+
+        .category-filter {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            padding: 8px 14px;
+            border-radius: 20px;
+            border: 1px solid #dce1ed;
+            background: white;
+            color: #5e678a;
+            font-size: 12px;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: #5b42d9;
+            color: white;
+            border-color: #5b42d9;
+        }
+
+        /* ================= MY BLOGS ================= */
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border: 1px solid #e1e5f0;
+            border-radius: 11px;
+        }
+
+        .empty-state h2 {
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #717b9b;
+            margin-bottom: 20px;
+        }
+
+        /* ================= PROFILE ================= */
+
+        .profile-card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border: 1px solid #e1e5f0;
+            border-radius: 11px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .large-profile {
+            width: 85px;
+            height: 85px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #704ce9, #4438ca);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .profile-card h1 {
+            font-size: 24px;
+            margin-bottom: 7px;
+        }
+
+        .profile-card p {
+            color: #70799b;
+        }
+
+        /* ================= LOGIN / REGISTER ================= */
+
+        .auth-wrapper {
+            min-height: calc(100vh - 70px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-card {
+            width: 410px;
+            background: white;
+            border: 1px solid #e0e5f0;
+            border-radius: 13px;
+            padding: 30px;
+            box-shadow: 0 12px 35px rgba(33, 40, 83, 0.07);
+        }
+
+        .auth-logo {
+            width: 55px;
+            height: 55px;
+            margin: 0 auto 15px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #7444ed, #4938cf);
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-card h1 {
+            text-align: center;
+            margin-bottom: 7px;
+        }
+
+        .auth-card > p {
+            text-align: center;
+            color: #75809f;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .auth-link {
+            text-align: center;
+            font-size: 12px;
+            color: #737d9d;
+            margin-top: 17px;
+        }
+
+        .auth-link button {
+            border: none;
+            background: none;
+            color: #5b42d9;
+            font-weight: bold;
+        }
+
+        /* ================= MESSAGE ================= */
+
+        .message {
+            display: none;
+            padding: 11px 13px;
+            border-radius: 7px;
+            margin-bottom: 15px;
+            font-size: 12px;
+        }
+
+        .message.success {
+            display: block;
+            background: #e9f8ef;
+            color: #28794c;
+        }
+
+        .message.error {
+            display: block;
+            background: #fff0f2;
+            color: #bb3548;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1000px) {
+            .logo-area {
+                width: 210px;
+            }
+
+            .sidebar {
+                width: 200px;
+            }
+
+            .main {
+                margin-left: 200px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .create-container {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-card {
+                position: static;
+            }
+
+            .blog-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 750px) {
+            .header {
+                padding: 0 15px;
+            }
+
+            .logo-name {
+                display: none;
+            }
+
+            .logo-area {
+                width: 70px;
+            }
+
+            .search-box {
+                max-width: none;
+            }
+
+            .header-actions {
+                gap: 10px;
+            }
+
+            .profile-header span {
+                display: none;
+            }
+
+            .sidebar {
+                width: 70px;
+                padding: 20px 8px;
+            }
+
+            .sidebar-profile {
+                justify-content: center;
+                padding: 0 0 25px;
+            }
+
+            .sidebar-profile > div:last-child {
+                display: none;
+            }
+
+            .sidebar-menu button {
+                justify-content: center;
+                padding: 0;
+            }
+
+            .sidebar-menu button span:last-child {
+                display: none;
+            }
+
+            .sidebar-bottom {
+                display: none;
+            }
+
+            .main {
+                margin-left: 70px;
+            }
+
+            .page {
+                padding: 18px;
+            }
+
+            .hero {
+                padding: 30px;
+            }
+
+            .hero-shape {
+                display: none;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-heading {
+                align-items: flex-start;
+                gap: 10px;
+                flex-direction: column;
+            }
+
+            .category-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .auth-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header class="header">
+
+    <div class="logo-area">
+        <div class="logo">B</div>
+        <div class="logo-name">BlogSphere</div>
+    </div>
+
+    <div class="search-box">
+        <span class="search-icon">⌕</span>
+        <input
+            type="text"
+            id="globalSearch"
+            placeholder="Search blogs..."
+            oninput="searchBlogs()"
+        >
+    </div>
+
+    <div class="header-actions">
+
+        <button class="header-icon" onclick="showPage('homePage')" title="Home">
+            ⌂
+        </button>
+
+        <button class="header-icon" title="Notifications">
+            ♧
+            <span class="notification-dot"></span>
+        </button>
+
+        <div class="profile-header">
+            <div class="profile-circle" id="headerInitial">S</div>
+            <span id="headerUserName">Srinithi</span>
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar">
+
+    <div class="sidebar-profile">
+
+        <div class="profile-circle" id="sidebarInitial">
+            S
+        </div>
+
+        <div>
+            <div class="sidebar-name" id="sidebarUserName">
+                Srinithi
+            </div>
+
+            <div class="sidebar-role">
+                Blogger
+            </div>
+        </div>
+
+    </div>
+
+
+    <ul class="sidebar-menu">
+
+        <li>
+            <button onclick="showPage('dashboardPage')" id="menuDashboard">
+                <span class="menu-icon">⌂</span>
+                <span>Dashboard</span>
+            </button>
+        </li>
+
+        <li>
+            <button onclick="showPage('explorePage')" id="menuExplore">
+                <span class="menu-icon">◉</span>
+                <span>Explore Blogs</span>
+            </button>
+        </li>
+
+        <li>
+            <button onclick="showPage('createPage')" id="menuCreate">
+                <span class="menu-icon">✎</span>
+                <span>Create Blog</span>
+            </button>
+        </li>
+
+        <li>
+            <button onclick="showPage('myBlogsPage')" id="menuMyBlogs">
+                <span class="menu-icon">▤</span>
+                <span>My Blogs</span>
+            </button>
+        </li>
+
+        <li>
+            <button onclick="showPage('profilePage')" id="menuProfile">
+                <span class="menu-icon">♙</span>
+                <span>Profile</span>
+            </button>
+        </li>
+
+        <li>
+            <!-- FIXED LOGOUT BUTTON -->
+            <button onclick="logoutUser()" id="logoutButton">
+                <span class="menu-icon">⇥</span>
+                <span>Logout</span>
+            </button>
+        </li>
+
+    </ul>
+
+
+    <div class="sidebar-bottom">
+        Good ideas<br>
+        build great stories
+    </div>
+
+</aside>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+
+    <!-- ================= HOME ================= -->
+
+    <section id="homePage" class="page active">
+
+        <div class="hero">
+
+            <div class="hero-content">
+
+                <h1>Write. Share. Inspire.</h1>
+
+                <p>
+                    Share your knowledge, experiences and ideas
+                    with a growing community of readers.
+                </p>
+
+                <button class="hero-btn" onclick="showPage('createPage')">
+                    Start Writing
+                </button>
+
+            </div>
+
+            <div class="hero-shape"></div>
+
+        </div>
+
+
+        <div class="section-header">
+
+            <h2>Latest Stories</h2>
+
+            <button class="view-all" onclick="showPage('explorePage')">
+                View All
+            </button>
+
+        </div>
+
+
+        <div id="blogList" class="blog-grid"></div>
+
+    </section>
+
+
+    <!-- ================= DASHBOARD ================= -->
+
+    <section id="dashboardPage" class="page">
+
+        <div class="dashboard-container">
+
+            <div class="dashboard-heading">
+
+                <div>
+                    <h1>Welcome back, <span id="dashboardName">Srinithi</span></h1>
+                    <p>Manage your blogs and track your activity.</p>
+                </div>
+
+                <button
+                    class="primary-btn"
+                    onclick="showPage('createPage')"
+                >
+                    + New Blog
+                </button>
+
+            </div>
+
+
+            <!-- SMALLER DASHBOARD STATS -->
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <div class="stat-title">Total Blogs</div>
+                    <div class="stat-number" id="totalBlogs">0</div>
+                    <div class="stat-small">Your posts</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-title">Published</div>
+                    <div class="stat-number" id="publishedBlogs">0</div>
+                    <div class="stat-small">Live posts</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-title">Total Views</div>
+                    <div class="stat-number" id="totalViews">0</div>
+                    <div class="stat-small">Blog views</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-title">Account</div>
+                    <div class="stat-number">Active</div>
+                    <div class="stat-small">Good standing</div>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-grid">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+                        <h2>Recent Posts</h2>
+
+                        <button
+                            class="view-all"
+                            onclick="showPage('myBlogsPage')"
+                        >
+                            View All
+                        </button>
+                    </div>
+
+                    <div id="recentPosts"></div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+                        <h2>Quick Action</h2>
+                    </div>
+
+                    <button
+                        class="primary-btn"
+                        style="width:100%;"
+                        onclick="showPage('createPage')"
+                    >
+                        + Create New Blog
+                    </button>
+
+                    <div class="tip-box">
+
+                        <h3>Writing Tip</h3>
+
+                        <p>
+                            Start your blog with a clear idea.
+                            Use short paragraphs and practical
+                            examples to keep readers interested.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CREATE BLOG ================= -->
+
+    <section id="createPage" class="page">
+
+        <div class="create-container">
+
+            <!-- LEFT SIDE -->
+
+            <div class="create-left">
+
+                <div class="create-heading">
+
+                    <h1>✎ Create New Blog</h1>
+
+                    <p>
+                        Share your knowledge, experience or ideas with the world.
+                    </p>
+
+                </div>
+
+
+                <div class="form-card">
+
+                    <div id="createMessage" class="message"></div>
+
+
+                    <!-- TITLE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Blog Title
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="blogTitle"
+                            class="form-control"
+                            placeholder="Enter your blog title..."
+                            oninput="updatePreview()"
+                        >
+
+                    </div>
+
+
+                    <!-- CATEGORY -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Category
+                            <span class="required">*</span>
+                        </label>
+
+                        <select
+                            id="blogCategory"
+                            class="form-control"
+                            onchange="categoryChanged()"
+                        >
+
+                            <option value="">
+                                Select category
+                            </option>
+
+                            <option value="Technology">
+                                Technology
+                            </option>
+
+                            <option value="Programming">
+                                Programming
+                            </option>
+
+                            <option value="Education">
+                                Education
+                            </option>
+
+                            <option value="Career">
+                                Career
+                            </option>
+
+                            <option value="Lifestyle">
+                                Lifestyle
+                            </option>
+
+                            <option value="Travel">
+                                Travel
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- CATEGORY IMAGES -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Choose Category Image
+                        </label>
+
+                        <div class="category-grid">
+
+                            <div
+                                class="category-card"
+                                data-category="Technology"
+                                onclick="selectCategory('Technology')"
+                            >
+
+                                <div class="check-mark">✓</div>
+
+                                <img
+                                    src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80"
+                                >
+
+                                <span>Technology</span>
+
+                            </div>
+
+
+                            <div
+                                class="category-card"
+                                data-category="Programming"
+                                onclick="selectCategory('Programming')"
+                            >
+
+                                <div class="check-mark">✓</div>
+
+                                <img
+                                    src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80"
+                                >
+
+                                <span>Programming</span>
+
+                            </div>
+
+
+                            <div
+                                class="category-card"
+                                data-category="Education"
+                                onclick="selectCategory('Education')"
+                            >
+
+                                <div class="check-mark">✓</div>
+
+                                <img
+                                    src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=600&q=80"
+                                >
+
+                                <span>Education</span>
+
+                            </div>
+
+
+                            <div
+                                class="category-card"
+                                data-category="Career"
+                                onclick="selectCategory('Career')"
+                            >
+
+                                <div class="check-mark">✓</div>
+
+                                <img
+                                    src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80"
+                                >
+
+                                <span>Career</span>
+
+                            </div>
+
+
+                            <div
+                                class="category-card"
+                                data-category="Lifestyle"
+                                onclick="selectCategory('Lifestyle')"
+                            >
+
+                                <div class="check-mark">✓</div>
+
+                                <img
+                                    src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=600&q=80"
+                                >
+
+                                <span>Lifestyle</span>
+
+                            </div>
+
+
+                            <div
+                                class="category-card"
+                                data-category="Travel"
+                                onclick="selectCategory('Travel')"
+                            >
+
+                                <div class="check-mark">✓</div>
+
+                                <img
+                                    src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80"
+                                >
+
+                                <span>Travel</span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- FEATURED IMAGE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Featured Image
+                            <span style="font-weight:normal;color:#7b84a2;">
+                                (Optional)
+                            </span>
+                        </label>
+
+                        <input
+                            type="file"
+                            id="featuredImage"
+                            class="file-input"
+                            accept="image/*"
+                            onchange="loadFeaturedImage(event)"
+                        >
+
+                    </div>
+
+
+                    <!-- CONTENT -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Blog Content
+                            <span class="required">*</span>
+                        </label>
+
+                        <div class="editor-toolbar">
+
+                            <button onclick="formatText('bold')">B</button>
+
+                            <button onclick="formatText('italic')">
+                                I
+                            </button>
+
+                            <button onclick="formatText('underline')">
+                                U
+                            </button>
+
+                            <button onclick="formatText('insertUnorderedList')">
+                                •
+                            </button>
+
+                        </div>
+
+                        <textarea
+                            id="blogContent"
+                            class="form-control content-editor"
+                            placeholder="Write your blog content here..."
+                            oninput="updatePreview()"
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-buttons">
+
+                        <button
+                            class="secondary-btn"
+                            onclick="saveDraft()"
+                        >
+                            Save Draft
+                        </button>
+
+                        <button
+                            class="primary-btn"
+                            onclick="publishBlog()"
+                        >
+                            Publish Blog
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT SIDE PREVIEW -->
+
+            <div class="preview-card">
+
+                <div class="preview-header">
+
+                    <span style="font-size:21px;">◉</span>
+
+                    <h2>Live Preview</h2>
+
+                </div>
+
+                <img
+                    id="previewImage"
+                    class="preview-image"
+                    src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80"
+                >
+
+                <span
+                    class="category-tag"
+                    id="previewCategory"
+                >
+                    Technology
+                </span>
+
+                <h1 id="previewTitle">
+                    Your Blog Title
+                </h1>
+
+                <div class="preview-meta">
+                    By <span id="previewAuthor">Srinithi</span>
+                    &nbsp; | &nbsp;
+                    Today
+                </div>
+
+                <div
+                    class="preview-content"
+                    id="previewContent"
+                >
+                    Your blog content will appear here.
+                    Add useful information, examples and
+                    ideas to make your blog attractive to readers.
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= EXPLORE ================= -->
+
+    <section id="explorePage" class="page">
+
+        <div class="explore-container">
+
+            <div class="explore-header">
+
+                <h1>Explore Blogs</h1>
+
+                <p>
+                    Discover interesting stories from different categories.
+                </p>
+
+            </div>
+
+
+            <div class="category-filter">
+
+                <button
+                    class="filter-btn active"
+                    onclick="filterCategory('All', this)"
+                >
+                    All
+                </button>
+
+                <button
+                    class="filter-btn"
+                    onclick="filterCategory('Technology', this)"
+                >
+                    Technology
+                </button>
+
+                <button
+                    class="filter-btn"
+                    onclick="filterCategory('Programming', this)"
+                >
+                    Programming
+                </button>
+
+                <button
+                    class="filter-btn"
+                    onclick="filterCategory('Education', this)"
+                >
+                    Education
+                </button>
+
+                <button
+                    class="filter-btn"
+                    onclick="filterCategory('Career', this)"
+                >
+                    Career
+                </button>
+
+                <button
+                    class="filter-btn"
+                    onclick="filterCategory('Lifestyle', this)"
+                >
+                    Lifestyle
+                </button>
+
+                <button
+                    class="filter-btn"
+                    onclick="filterCategory('Travel', this)"
+                >
+                    Travel
+                </button>
+
+            </div>
+
+
+            <div
+                id="exploreBlogList"
+                class="blog-grid"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= MY BLOGS ================= -->
+
+    <section id="myBlogsPage" class="page">
+
+        <div class="explore-container">
+
+            <div class="explore-header">
+
+                <h1>My Blogs</h1>
+
+                <p>
+                    Manage the blogs you have created.
+                </p>
+
+            </div>
+
+            <div
+                id="myBlogList"
+                class="blog-grid"
+            ></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= PROFILE ================= -->
+
+    <section id="profilePage" class="page">
+
+        <div class="profile-card">
+
+            <div
+                class="large-profile"
+                id="profileInitial"
+            >
+                S
+            </div>
+
+            <h1 id="profileName">
+                Srinithi
+            </h1>
+
+            <p id="profileEmail">
+                blogger@example.com
+            </p>
+
+            <br>
+
+            <p>
+                BlogSphere Blogger
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= LOGIN ================= -->
+
+    <section id="loginPage" class="page">
+
+        <div class="auth-wrapper">
+
+            <div class="auth-card">
+
+                <div class="auth-logo">B</div>
+
+                <h1>Welcome Back</h1>
+
+                <p>
+                    Login to continue to BlogSphere.
+                </p>
+
+                <div
+                    id="loginMessage"
+                    class="message"
+                ></div>
+
+                <form onsubmit="loginUser(event)">
+
+                    <div class="form-group">
+
+                        <label>Email Address</label>
+
+                        <input
+                            type="email"
+                            id="loginEmail"
+                            class="form-control"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>Password</label>
+
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            class="form-control"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="primary-btn"
+                        style="width:100%;"
+                    >
+                        Login
+                    </button>
+
+                </form>
+
+
+                <div class="auth-link">
+
+                    Don't have an account?
+
+                    <button onclick="showPage('registerPage')">
+                        Register
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= REGISTER ================= -->
+
+    <section id="registerPage" class="page">
+
+        <div class="auth-wrapper">
+
+            <div class="auth-card">
+
+                <div class="auth-logo">B</div>
+
+                <h1>Create Account</h1>
+
+                <p>
+                    Start sharing your ideas with BlogSphere.
+                </p>
+
+                <div
+                    id="registerMessage"
+                    class="message"
+                ></div>
+
+                <form onsubmit="registerUser(event)">
+
+                    <div class="form-group">
+
+                        <label>Full Name</label>
+
+                        <input
+                            type="text"
+                            id="registerName"
+                            class="form-control"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>Email Address</label>
+
+                        <input
+                            type="email"
+                            id="registerEmail"
+                            class="form-control"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>Password</label>
+
+                        <input
+                            type="password"
+                            id="registerPassword"
+                            class="form-control"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>Confirm Password</label>
+
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            class="form-control"
+                            required
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="primary-btn"
+                        style="width:100%;"
+                    >
+                        Create Account
+                    </button>
+
+                </form>
+
+
+                <div class="auth-link">
+
+                    Already have an account?
+
+                    <button onclick="showPage('loginPage')">
+                        Login
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+    /* =====================================================
+       BLOGSPHERE JAVASCRIPT
+    ===================================================== */
+
+    const categoryImages = {
+
+        Technology:
+            "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80",
+
+        Programming:
+            "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80",
+
+        Education:
+            "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=900&q=80",
+
+        Career:
+            "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=900&q=80",
+
+        Lifestyle:
+            "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=900&q=80",
+
+        Travel:
+            "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80"
+    };
+
+
+    /* =====================================================
+       SAMPLE BLOGS
+    ===================================================== */
+
+    const defaultBlogs = [
+
+        {
+            id: 1,
+            title: "The Future of Artificial Intelligence in Everyday Technology",
+            category: "Technology",
+            content:
+                "Artificial Intelligence is becoming an important part of everyday technology. From smart assistants to recommendation systems, AI is helping people complete tasks faster and make better decisions.",
+            author: "Srinithi",
+            date: "Today",
+            views: 120,
+            image: categoryImages.Technology
+        },
+
+        {
+            id: 2,
+            title: "Getting Started with Web Development",
+            category: "Programming",
+            content:
+                "Web development is a useful skill for students and beginners. HTML creates the structure, CSS improves the design and JavaScript adds interaction to websites.",
+            author: "Srinithi",
+            date: "Today",
+            views: 95,
+            image: categoryImages.Programming
+        },
+
+        {
+            id: 3,
+            title: "Effective Learning Strategies for College Students",
+            category: "Education",
+            content:
+                "Good learning habits can make college studies easier. Setting goals, taking notes, practicing regularly and reviewing important concepts can improve understanding.",
+            author: "Srinithi",
+            date: "Today",
+            views: 85,
+            image: categoryImages.Education
+        },
+
+        {
+            id: 4,
+            title: "How to Prepare for a Successful IT Career",
+            category: "Career",
+            content:
+                "Building an IT career requires technical knowledge, practical projects and communication skills. Students can improve their career opportunities by continuously learning and gaining practical experience.",
+            author: "Srinithi",
+            date: "Today",
+            views: 76,
+            image: categoryImages.Career
+        },
+
+        {
+            id: 5,
+            title: "Simple Habits for a Productive Student Life",
+            category: "Lifestyle",
+            content:
+                "Small daily habits can make student life more productive. Planning your day, reducing distractions and maintaining a healthy routine can help you stay focused.",
+            author: "Srinithi",
+            date: "Today",
+            views: 65,
+            image: categoryImages.Lifestyle
+        },
+
+        {
+            id: 6,
+            title: "Why Traveling Is a Great Learning Experience",
+            category: "Travel",
+            content:
+                "Travel gives students an opportunity to understand different cultures, places and experiences. Every journey can provide new knowledge and memorable lessons.",
+            author: "Srinithi",
+            date: "Today",
+            views: 55,
+            image: categoryImages.Travel
+        }
+
+    ];
+
+
+    /* =====================================================
+       LOCAL STORAGE
+    ===================================================== */
+
+    let blogs =
+        JSON.parse(localStorage.getItem("blogs")) || defaultBlogs;
+
+    let currentUser =
+        JSON.parse(localStorage.getItem("currentUser")) || null;
+
+    let selectedCategory = "";
+
+
+    if (!localStorage.getItem("blogs")) {
+        localStorage.setItem("blogs", JSON.stringify(blogs));
+    }
+
+
+    /* =====================================================
+       PAGE NAVIGATION
+    ===================================================== */
+
+    function showPage(pageId) {
+
+        document.querySelectorAll(".page").forEach(function(page) {
+            page.classList.remove("active");
+        });
+
+        const page = document.getElementById(pageId);
+
+        if (page) {
+            page.classList.add("active");
+        }
+
+        updateMenuActive(pageId);
+
+        if (pageId === "dashboardPage") {
+            updateDashboard();
+        }
+
+        if (pageId === "explorePage") {
+            displayExploreBlogs(blogs);
+        }
+
+        if (pageId === "myBlogsPage") {
+            displayMyBlogs();
+        }
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+
+    function updateMenuActive(pageId) {
+
+        document.querySelectorAll(".sidebar-menu button").forEach(function(button) {
+            button.classList.remove("active");
+        });
+
+        if (pageId === "dashboardPage") {
+            document.getElementById("menuDashboard").classList.add("active");
+        }
+
+        if (pageId === "explorePage") {
+            document.getElementById("menuExplore").classList.add("active");
+        }
+
+        if (pageId === "createPage") {
+            document.getElementById("menuCreate").classList.add("active");
+        }
+
+        if (pageId === "myBlogsPage") {
+            document.getElementById("menuMyBlogs").classList.add("active");
+        }
+
+        if (pageId === "profilePage") {
+            document.getElementById("menuProfile").classList.add("active");
+        }
+    }
+
+
+    /* =====================================================
+       USER DETAILS
+    ===================================================== */
+
+    function updateUserDetails() {
+
+        if (!currentUser) {
+            return;
+        }
+
+        const name =
+            currentUser.name || "Srinithi";
+
+        const initial =
+            name.charAt(0).toUpperCase();
+
+        document.getElementById("headerInitial").textContent =
+            initial;
+
+        document.getElementById("sidebarInitial").textContent =
+            initial;
+
+        document.getElementById("profileInitial").textContent =
+            initial;
+
+        document.getElementById("headerUserName").textContent =
+            name;
+
+        document.getElementById("sidebarUserName").textContent =
+            name;
+
+        document.getElementById("dashboardName").textContent =
+            name;
+
+        document.getElementById("previewAuthor").textContent =
+            name;
+
+        document.getElementById("profileName").textContent =
+            name;
+
+        document.getElementById("profileEmail").textContent =
+            currentUser.email || "blogger@example.com";
+    }
+
+
+    /* =====================================================
+       REGISTER
+    ===================================================== */
+
+    function registerUser(event) {
+
+        event.preventDefault();
+
+        const name =
+            document.getElementById("registerName").value.trim();
+
+        const email =
+            document.getElementById("registerEmail").value.trim();
+
+        const password =
+            document.getElementById("registerPassword").value;
+
+        const confirmPassword =
+            document.getElementById("confirmPassword").value;
+
+
+        if (password !== confirmPassword) {
+
+            showMessage(
+                "registerMessage",
+                "Passwords do not match.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const user = {
+            name: name,
+            email: email,
+            password: password
+        };
+
+
+        localStorage.setItem(
+            "registeredUser",
+            JSON.stringify(user)
+        );
+
+
+        showMessage(
+            "registerMessage",
+            "Account created successfully. Please login.",
+            "success"
+        );
+
+
+        document.querySelector("#registerPage form").reset();
+
+
+        setTimeout(function() {
+            showPage("loginPage");
+        }, 1000);
+    }
+
+
+    /* =====================================================
+       LOGIN
+    ===================================================== */
+
+    function loginUser(event) {
+
+        event.preventDefault();
+
+        const email =
+            document.getElementById("loginEmail").value.trim();
+
+        const password =
+            document.getElementById("loginPassword").value;
+
+
+        const registeredUser =
+            JSON.parse(localStorage.getItem("registeredUser"));
+
+
+        if (registeredUser) {
+
+            if (
+                email !== registeredUser.email ||
+                password !== registeredUser.password
+            ) {
+
+                showMessage(
+                    "loginMessage",
+                    "Invalid email or password.",
+                    "error"
+                );
+
+                return;
+            }
+
+            currentUser = {
+                name: registeredUser.name,
+                email: registeredUser.email
+            };
+
+        } else {
+
+            currentUser = {
+                name: "Srinithi",
+                email: email
+            };
+
+        }
+
+
+        localStorage.setItem(
+            "currentUser",
+            JSON.stringify(currentUser)
+        );
+
+
+        updateUserDetails();
+
+        document.getElementById("loginEmail").value = "";
+        document.getElementById("loginPassword").value = "";
+
+
+        showPage("dashboardPage");
+    }
+
+
+    /* =====================================================
+       FIXED LOGOUT FUNCTION
+    ===================================================== */
+
+    function logoutUser() {
+
+        /*
+            Remove current login session.
+            Registered account is NOT deleted.
+        */
+
+        localStorage.removeItem("currentUser");
+
+        currentUser = null;
+
+
+        /*
+            Reset user display.
+        */
+
+        document.getElementById("headerInitial").textContent = "S";
+        document.getElementById("sidebarInitial").textContent = "S";
+
+        document.getElementById("profileInitial").textContent = "S";
+
+        document.getElementById("headerUserName").textContent =
+            "Guest";
+
+        document.getElementById("sidebarUserName").textContent =
+            "Guest";
+
+        document.getElementById("dashboardName").textContent =
+            "Guest";
+
+
+        /*
+            Go directly to login page.
+        */
+
+        showPage("loginPage");
+
+
+        /*
+            Show logout confirmation.
+        */
+
+        setTimeout(function() {
+
+            showMessage(
+                "loginMessage",
+                "You have been logged out successfully.",
+                "success"
+            );
+
+        }, 100);
+    }
+
+
+    /* =====================================================
+       CATEGORY SELECTION
+    ===================================================== */
+
+    function selectCategory(category) {
+
+        selectedCategory = category;
+
+        document.getElementById("blogCategory").value =
+            category;
+
+
+        document.querySelectorAll(".category-card").forEach(function(card) {
+
+            card.classList.remove("selected");
+
+            if (card.dataset.category === category) {
+                card.classList.add("selected");
+            }
+
+        });
+
+
+        updatePreview();
+    }
+
+
+    function categoryChanged() {
+
+        const category =
+            document.getElementById("blogCategory").value;
+
+        selectedCategory = category;
+
+
+        document.querySelectorAll(".category-card").forEach(function(card) {
+
+            card.classList.remove("selected");
+
+            if (card.dataset.category === category) {
+                card.classList.add("selected");
+            }
+
+        });
+
+
+        updatePreview();
+    }
+
+
+    /* =====================================================
+       FEATURED IMAGE
+    ===================================================== */
+
+    function loadFeaturedImage(event) {
+
+        const file =
+            event.target.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        const reader =
+            new FileReader();
+
+        reader.onload = function(e) {
+
+            document.getElementById("previewImage").src =
+                e.target.result;
+
+            document.getElementById("previewImage").dataset.custom =
+                "true";
+
+        };
+
+        reader.readAsDataURL(file);
+    }
+
+
+    /* =====================================================
+       LIVE PREVIEW
+    ===================================================== */
+
+    function updatePreview() {
+
+        const title =
+            document.getElementById("blogTitle").value.trim();
+
+        const category =
+            document.getElementById("blogCategory").value;
+
+        const content =
+            document.getElementById("blogContent").value.trim();
+
+
+        document.getElementById("previewTitle").textContent =
+            title || "Your Blog Title";
+
+
+        document.getElementById("previewCategory").textContent =
+            category || "Technology";
+
+
+        document.getElementById("previewContent").textContent =
+            content ||
+            "Your blog content will appear here. Add useful information, examples and ideas to make your blog attractive to readers.";
+
+
+        /*
+            Only change preview image automatically
+            if the user has not uploaded a custom image.
+        */
+
+        const previewImage =
+            document.getElementById("previewImage");
+
+        if (previewImage.dataset.custom !== "true") {
+
+            previewImage.src =
+                categoryImages[category] ||
+                categoryImages.Technology;
+
+        }
+    }
+
+
+    /* =====================================================
+       PUBLISH BLOG
+    ===================================================== */
+
+    function publishBlog() {
+
+        const title =
+            document.getElementById("blogTitle").value.trim();
+
+        const category =
+            document.getElementById("blogCategory").value;
+
+        const content =
+            document.getElementById("blogContent").value.trim();
+
+
+        if (!title) {
+
+            showMessage(
+                "createMessage",
+                "Please enter a blog title.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        if (!category) {
+
+            showMessage(
+                "createMessage",
+                "Please select a category.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        if (!content) {
+
+            showMessage(
+                "createMessage",
+                "Please enter blog content.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const author =
+            currentUser
+                ? currentUser.name
+                : "Srinithi";
+
+
+        const previewImage =
+            document.getElementById("previewImage");
+
+
+        const image =
+            previewImage.dataset.custom === "true"
+                ? previewImage.src
+                : categoryImages[category];
+
+
+        const newBlog = {
+
+            id: Date.now(),
+
+            title: title,
+
+            category: category,
+
+            content: content,
+
+            author: author,
+
+            date: new Date().toLocaleDateString(),
+
+            views: 0,
+
+            image: image
+
+        };
+
+
+        blogs.unshift(newBlog);
+
+
+        localStorage.setItem(
+            "blogs",
+            JSON.stringify(blogs)
+        );
+
+
+        showMessage(
+            "createMessage",
+            "Blog published successfully.",
+            "success"
+        );
+
+
+        clearCreateForm();
+
+
+        displayBlogs();
+
+        updateDashboard();
+
+
+        setTimeout(function() {
+            showPage("myBlogsPage");
+        }, 900);
+    }
+
+
+    /* =====================================================
+       SAVE DRAFT
+    ===================================================== */
+
+    function saveDraft() {
+
+        const title =
+            document.getElementById("blogTitle").value.trim();
+
+        const category =
+            document.getElementById("blogCategory").value;
+
+        const content =
+            document.getElementById("blogContent").value.trim();
+
+
+        if (!title && !content) {
+
+            showMessage(
+                "createMessage",
+                "Enter some content before saving a draft.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const draft = {
+
+            title: title,
+
+            category: category,
+
+            content: content
+
+        };
+
+
+        localStorage.setItem(
+            "blogDraft",
+            JSON.stringify(draft)
+        );
+
+
+        showMessage(
+            "createMessage",
+            "Draft saved successfully.",
+            "success"
+        );
+    }
+
+
+    /* =====================================================
+       CLEAR CREATE FORM
+    ===================================================== */
+
+    function clearCreateForm() {
+
+        document.getElementById("blogTitle").value = "";
+
+        document.getElementById("blogCategory").value = "";
+
+        document.getElementById("blogContent").value = "";
+
+        document.getElementById("featuredImage").value = "";
+
+        document.getElementById("previewImage").dataset.custom =
+            "false";
+
+        selectedCategory = "";
+
+
+        document.querySelectorAll(".category-card").forEach(function(card) {
+            card.classList.remove("selected");
+        });
+
+
+        updatePreview();
+    }
+
+
+    /* =====================================================
+       DISPLAY HOME BLOGS
+    ===================================================== */
+
+    function displayBlogs(filteredBlogs = blogs) {
+
+        const container =
+            document.getElementById("blogList");
+
+        container.innerHTML = "";
+
+
+        if (filteredBlogs.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty-state" style="grid-column:1/-1;">
+                    <h2>No blogs found</h2>
+                    <p>Try another search.</p>
+                </div>
+            `;
+
+            return;
+        }
+
+
+        filteredBlogs.slice(0, 6).forEach(function(blog) {
+
+            container.innerHTML += createBlogCard(blog);
+
+        });
+    }
+
+
+    /* =====================================================
+       EXPLORE BLOGS
+    ===================================================== */
+
+    function displayExploreBlogs(filteredBlogs) {
+
+        const container =
+            document.getElementById("exploreBlogList");
+
+        container.innerHTML = "";
+
+
+        if (filteredBlogs.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty-state" style="grid-column:1/-1;">
+                    <h2>No blogs available</h2>
+                    <p>Create a new blog to see it here.</p>
+                </div>
+            `;
+
+            return;
+        }
+
+
+        filteredBlogs.forEach(function(blog) {
+
+            container.innerHTML += createBlogCard(blog);
+
+        });
+    }
+
+
+    /* =====================================================
+       MY BLOGS
+    ===================================================== */
+
+    function displayMyBlogs() {
+
+        const container =
+            document.getElementById("myBlogList");
+
+
+        const userName =
+            currentUser
+                ? currentUser.name
+                : "Srinithi";
+
+
+        const myBlogs =
+            blogs.filter(function(blog) {
+                return blog.author === userName;
+            });
+
+
+        container.innerHTML = "";
+
+
+        if (myBlogs.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty-state" style="grid-column:1/-1;">
+                    <h2>No blogs yet</h2>
+                    <p>Create your first blog and publish it here.</p>
+
+                    <button
+                        class="primary-btn"
+                        onclick="showPage('createPage')"
+                    >
+                        Create Blog
+                    </button>
+                </div>
+            `;
+
+            return;
+        }
+
+
+        myBlogs.forEach(function(blog) {
+
+            container.innerHTML += createBlogCard(blog);
+
+        });
+    }
+
+
+    /* =====================================================
+       BLOG CARD
+    ===================================================== */
+
+    function createBlogCard(blog) {
+
+        return `
+
+            <article class="blog-card">
+
+                <img
+                    src="${blog.image || categoryImages[blog.category] || categoryImages.Technology}"
+                    alt="${escapeHTML(blog.category)}"
+                >
+
+                <div class="blog-card-body">
+
+                    <span class="category-tag">
+                        ${escapeHTML(blog.category)}
+                    </span>
+
+                    <h3>
+                        ${escapeHTML(blog.title)}
+                    </h3>
+
+                    <p>
+                        ${escapeHTML(
+                            blog.content.substring(0, 120)
+                        )}
+                        ${blog.content.length > 120 ? "..." : ""}
+                    </p>
+
+                    <div class="blog-meta">
+
+                        By ${escapeHTML(blog.author)}
+                        &nbsp; | &nbsp;
+                        ${escapeHTML(blog.date)}
+                        &nbsp; | &nbsp;
+                        ${blog.views} views
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        `;
+    }
+
+
+    /* =====================================================
+       SEARCH
+    ===================================================== */
+
+    function searchBlogs() {
+
+        const query =
+            document.getElementById("globalSearch").value
+                .toLowerCase()
+                .trim();
+
+
+        if (!query) {
+
+            displayBlogs(blogs);
+
+            return;
+        }
+
+
+        const filtered =
+            blogs.filter(function(blog) {
+
+                return (
+                    blog.title.toLowerCase().includes(query) ||
+                    blog.category.toLowerCase().includes(query) ||
+                    blog.content.toLowerCase().includes(query) ||
+                    blog.author.toLowerCase().includes(query)
+                );
+
+            });
+
+
+        displayBlogs(filtered);
+
+        showPage("homePage");
+    }
+
+
+    /* =====================================================
+       CATEGORY FILTER
+    ===================================================== */
+
+    function filterCategory(category, button) {
+
+        document.querySelectorAll(".filter-btn").forEach(function(btn) {
+            btn.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+
+        if (category === "All") {
+
+            displayExploreBlogs(blogs);
+
+            return;
+        }
+
+
+        const filtered =
+            blogs.filter(function(blog) {
+
+                return blog.category === category;
+
+            });
+
+
+        displayExploreBlogs(filtered);
+    }
+
+
+    /* =====================================================
+       DASHBOARD
+    ===================================================== */
+
+    function updateDashboard() {
+
+        const userName =
+            currentUser
+                ? currentUser.name
+                : "Srinithi";
+
+
+        const myBlogs =
+            blogs.filter(function(blog) {
+
+                return blog.author === userName;
+
+            });
+
+
+        document.getElementById("totalBlogs").textContent =
+            myBlogs.length;
+
+
+        document.getElementById("publishedBlogs").textContent =
+            myBlogs.length;
+
+
+        const totalViews =
+            myBlogs.reduce(function(total, blog) {
+
+                return total + Number(blog.views || 0);
+
+            }, 0);
+
+
+        document.getElementById("totalViews").textContent =
+            totalViews;
+
+
+        displayRecentPosts();
+    }
+
+
+    /* =====================================================
+       RECENT POSTS
+    ===================================================== */
+
+    function displayRecentPosts() {
+
+        const container =
+            document.getElementById("recentPosts");
+
+
+        const userName =
+            currentUser
+                ? currentUser.name
+                : "Srinithi";
+
+
+        const myBlogs =
+            blogs.filter(function(blog) {
+                return blog.author === userName;
+            });
+
+
+        container.innerHTML = "";
+
+
+        if (myBlogs.length === 0) {
+
+            container.innerHTML = `
+                <p style="color:#7b84a1;font-size:12px;">
+                    You have not published any blogs yet.
+                </p>
+            `;
+
+            return;
+        }
+
+
+        myBlogs.slice(0, 4).forEach(function(blog) {
+
+            container.innerHTML += `
+
+                <div class="recent-post">
+
+                    <img
+                        class="post-image"
+                        src="${blog.image || categoryImages[blog.category]}"
+                    >
+
+                    <div>
+
+                        <h3>
+                            ${escapeHTML(blog.title)}
+                        </h3>
+
+                        <p>
+                            ${escapeHTML(blog.category)}
+                            &nbsp; | &nbsp;
+                            ${blog.views} views
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+    }
+
+
+    /* =====================================================
+       TEXT FORMATTING
+    ===================================================== */
+
+    function formatText(command) {
+
+        document.execCommand(command, false, null);
+
+        document.getElementById("blogContent").focus();
+
+    }
+
+
+    /* =====================================================
+       MESSAGE
+    ===================================================== */
+
+    function showMessage(elementId, text, type) {
+
+        const element =
+            document.getElementById(elementId);
+
+        if (!element) {
+            return;
+        }
+
+        element.textContent = text;
+
+        element.className =
+            "message " + type;
+
+
+        setTimeout(function() {
+
+            element.className = "message";
+
+        }, 3500);
+    }
+
+
+    /* =====================================================
+       SECURITY
+    ===================================================== */
+
+    function escapeHTML(text) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent = text;
+
+        return div.innerHTML;
+    }
+
+
+    /* =====================================================
+       INITIALIZATION
+    ===================================================== */
+
+    function initializeApp() {
+
+        displayBlogs();
+
+        updateDashboard();
+
+        updateUserDetails();
+
+        updatePreview();
+
+
+        /*
+            If user is logged in,
+            show dashboard.
+            Otherwise show home page.
+        */
+
+        if (currentUser) {
+
+            updateUserDetails();
+
+            showPage("homePage");
+
+        } else {
+
+            showPage("homePage");
+
+        }
+
+    }
+
+
+    initializeApp();
+
+</script>
+
+</body>
+</html>
